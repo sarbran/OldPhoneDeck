@@ -16,6 +16,7 @@ No jailbreak, no App Store, nothing to install on the phone: it runs in Safari, 
 - **Now playing:** artwork, track, progress, and previous / play-pause / next for **Spotify** or **Apple Music**.
 - **Internet widget:** download, upload and ping (macOS's built-in `networkQuality`), plus a live traffic graph. Tap it to re-test.
 - **Batteries widget:** MacBook, Magic Keyboard / Mouse / Trackpad and AirPods (with case), each as an icon + percentage.
+- **Screens off (moon button):** one tap sets the MacBook's built-in display to zero brightness and puts all displays to sleep, so an external monitor switches off too. The Mac keeps running. Tap again to wake everything and restore the brightness.
 - **Fits any iPhone:** a compact 480×320 layout on old phones; full-width landscape and a portrait layout on modern ones.
 - **Modern iPhones also get:** voice input for Take note, and a **Phone** tab that streams the camera (into OBS) and the mic (into BlackHole) to your Mac.
 

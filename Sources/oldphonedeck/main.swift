@@ -63,6 +63,7 @@ func lanAddress() -> String {
 }
 
 let token = loadToken()
+Screens.recoverIfNeeded()
 let app = NSApplication.shared
 app.setActivationPolicy(.accessory)
 
@@ -119,7 +120,11 @@ let routes: (HTTPRequest, HTTPConnection) -> Void = { req, conn in
     case ("GET", "/stats"):
         var snap = stats.snapshot()
         snap["music"] = music.snapshot()
+        snap["dark"] = Screens.isDark
         conn.respondJSON(snap)
+    case ("POST", "/screens"):
+        // Toggle: MacBook display to zero brightness + all displays asleep, or back again.
+        conn.respondJSON(["dark": Screens.toggle()])
     case ("POST", "/speedtest"):
         stats.runSpeedTest()
         conn.respond(text: "ok")

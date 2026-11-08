@@ -41,6 +41,9 @@
     font-size: 11px; font-weight: 600; color: #c7c7cc; border-radius: 6px; }
   #seg div.on { background: #636366; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
   #right { position: absolute; right: 16px; top: 14px; font-size: 11px; font-weight: 600; color: #c7c7cc; white-space: nowrap; }
+  #dim { display: inline-block; width: 26px; height: 22px; margin: -6px 6px -6px 0; padding: 4px 5px; box-sizing: border-box; border-radius: 7px; color: #8e8e93; vertical-align: middle; }
+  #dim svg { display: block; }
+  #dim.on { background: #ff9f0a; color: #1c1c1e; }
   #link { display: inline-block; width: 6px; height: 6px; border-radius: 3px; background: #ff453a; margin-right: 5px; vertical-align: 1px; }
   #link.ok { background: #30d158; }
   .batt { display: inline-block; width: 20px; height: 9px; border: 1px solid rgba(255,255,255,.5); border-radius: 3px;
@@ -220,7 +223,7 @@
   <div id="status">
     <div id="clock"><span id="time">–</span><span id="ampm"></span><span id="date"></span></div>
     <div id="seg"><div data-view="deck" class="on">Deck</div><div data-view="phone">Phone</div></div>
-    <div id="right"><span id="link"></span><span id="macName">Mac</span><span id="phoneBatt" style="display:none"><span class="batt"><i id="phoneBattFill"></i></span></span></div>
+    <div id="right"><span id="dim" title="Screens off"><svg width="16" height="14" viewBox="0 0 16 16"><path d="M13.5 9.6A6 6 0 1 1 6.4 2.5a4.8 4.8 0 0 0 7.1 7.1z" fill="currentColor"/></svg></span><span id="link"></span><span id="macName">Mac</span><span id="phoneBatt" style="display:none"><span class="batt"><i id="phoneBattFill"></i></span></span></div>
   </div>
 
   <!-- Ask Claude -->
@@ -623,8 +626,18 @@
       drawSpark(d.net.history);
       renderBatteries(d.batteries);
       renderMusic(d.music);
+      setDim(!!d.dark);
     });
   }
+  function setDim(on) { $('dim').className = on ? 'on' : ''; }
+  tap($('dim'), function () {
+    xhr('POST', url('/screens'), '', function (s, text) {
+      if (s !== 200) { toast('Could not reach the Mac'); return; }
+      var dark = JSON.parse(text).dark;
+      setDim(dark);
+      toast(dark ? 'Screens off' : 'Screens on');
+    });
+  });
   setInterval(pollStats, 2000);
   tap($('net'), function () {
     xhr('POST', url('/speedtest'), '', function () { $('netTitle').textContent = 'Testing…'; toast('Running a speed test (~20 s)'); });
